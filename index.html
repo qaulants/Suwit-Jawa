@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suwit Jawa</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Tailwind CSS untuk Styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="glass-panel rounded-[2rem] shadow-2xl w-full max-w-lg p-6 sm:p-8 flex flex-col gap-8 relative overflow-hidden">
+
+    <!-- Suwit Jawa -->
+    <div class="text-center relative x-10">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-light">Suwit Jawa</h1>
+      <p class="text-slate-500 mt-2 text-sm font-medium">Ayo Kalahkan Komputer</p>
+    </div>
+
+    <!-- score board -->
+    <div class="flex justify-center items-center bg-white/80 rounded-2xl p-4 shadow-sm border-white/60 relative z-10">
+      <div class="text-center flex-1">
+        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Kamu</p>
+        <p class="text-4xl font-black text-emerald-500 transition-all duration-300" id="player-score">0</p>
+      </div>
+      <div class="text-xl sm:text-2xl font-black text-slate-300 px-2 sm:px-6">VS</div>
+      <div class="text-center flex-1">
+        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Computer</p>
+        <p class="text-4xl font-black text-rose-500 transition-all duration-300" id="comp-score">0</p>
+      </div>
+    </div>
+
+    <!-- arena permainan -->
+    <div class="relative bg-slate-50/50 rounded-3xl p-6 sm:p-10 flex flex-col items-center justify-between min-h-[320px] border border-white shadow-inner">
+      <div class="flex flex-col items-center gap-2">
+        <div id="comp-display" class="w-24 h-24 sm:w-28 bg-rose-100 rounded-full flex items-center justify-center text-5xl sm:text-6xl shadow-inner shadow-rose-200/50 transition-all duration-300 ">🤖</div>
+      </div>
+
+      <div id="result-badge" class="absolute top-1/2 left-1/2 px-8 py-3 rounded-2xl text-lg sm:text-xl font-black tracking-widest uppercase shadow-xl transition-all duration-500 z-20 opacity-0 pointer-events-none" style="transform: translate(-50%, -50%) scale(0.5);">SERI</div>
+      
+      <!-- Garis Tengah Pembatas -->
+      <div class="absolute top-1/2 left-8 right-8 h-[2px] bg-slate-200/50 rounded-full -translate-y-1/2"></div>
+      
+      <!-- Area pemain -->
+      <div class="flex flex-col items-center gap-2">
+        <div id="display-player" class="w-24 h-24 sm:w-28 bg-emerald-100 rounded-full flex items-center justify-center text-5xl sm:text-6xl shadow-inner shadow-emerald-200/50 transition-all duration-300">❓</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3 sm:gap-4 relative z-10">
+      <!-- Tombol Gajah -->
+      <button data-pilihan="gajah"
+        class="btn-pilihan group flex flex-col items-center gap-2 p-3 sm:p-4 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 active:scale-95 border border-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        id="btn-gajah">
+        <span class="text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-300">🐘</span>
+        <div class="text-center">
+          <span class="block text-xs sm:text-sm font-bold text-slate-700">Gajah</span>
+          <span class="block text-[10px] text-slate-400 font-medium">(Jempol)</span>
+        </div>
+      </button>
+
+      <!-- Tombol Orang -->
+      <button data-pilihan="orang"
+        class="btn-pilihan group flex flex-col items-center gap-2 p-3 sm:p-4 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 active:scale-95 border border-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        id="btn-orang">
+        <span class="text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-300">🧑</span>
+        <div class="text-center">
+          <span class="block text-xs sm:text-sm font-bold text-slate-700">Orang</span>
+          <span class="block text-[10px] text-slate-400 font-medium">(Telunjuk)</span>
+        </div>
+      </button>
+
+      <!-- Tombol Semut -->
+      <button data-pilihan="semut"
+        class="btn-pilihan group flex flex-col items-center gap-2 p-3 sm:p-4 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 active:scale-95 border border-slate-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        id="btn-semut">
+        <span class="text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-300">🐜</span>
+        <div class="text-center">
+          <span class="block text-xs sm:text-sm font-bold text-slate-700">Semut</span>
+          <span class="block text-[10px] text-slate-400 font-medium">(Kelingking)</span>
+        </div>
+      </button>
+
+    </div>
+
+    <div id="game-over-panel" class="hidden flex-col items-center gap-4 relative z-20 mt-2 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-indigo-100 transition-all">
+      <h2 id="final-result-text" class="text-xl sm:text-2xl font-black text-center"></h2>
+      <button onclick="resetGame()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-indigo-200 transition-all hover:-translate-y-1 active:scale-95 flex items-center gap-2">
+        Main Lagi
+      </button>
+    </div>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>
